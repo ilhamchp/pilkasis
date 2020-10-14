@@ -4,20 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class Pengguna extends Authenticatable
+class Kandidat extends Model
 {
-    use HasFactory, Notifiable;
-
+    use HasFactory;
     /**
      * Menandakan nama tabel yang
      * digunakan oleh model ini
      * 
      * @var string
      */
-    protected $table = 'pengguna';
+    protected $table = 'kandidat';
     
     /**
      * Menandakan kolom apa yang
@@ -25,7 +22,7 @@ class Pengguna extends Authenticatable
      * 
      * @var string 
      */
-    protected $primaryKey = 'nis';
+    protected $primaryKey = 'no_kandidat';
 
     /**
      * Menandakan apakah kolom
@@ -51,29 +48,21 @@ class Pengguna extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'no_kandidat',
         'nis',
-        'nama',
-        'username',
-        'password',
-        'is_admin'
+        'jk_kandidat',
+        'visi',
+        'misi',
+        'foto'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * Menandai bahwa tabel kandidat memiliki
+     * foreign key relation one to one 
+     * terhadap tabel pengguna
      */
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
-
-    /**
-     * Menandai bahwa tabel pengguna memiliki
-     * relation one to one 
-     * terhadap tabel kandidat
-     */
-    public function kandidat()
+    public function pengguna()
     {
-        return $this->hasOne('App\Models\Kandidat','nis');
+        return $this->belongsTo('App\Models\Pengguna','nis');
     }
 }

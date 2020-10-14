@@ -34,7 +34,7 @@ class PenggunaSeeder extends Seeder
             'nis'=>'5100032780483120001',
             'username'=>'agni',
             'password'=>bcrypt('5100032780483120001'),
-            'nama'=>'Muhammad Agni Arifin',
+            'nama'=>'M Agni Musthofa Al-Gifari',
             'is_admin'=>false
         ] );
         
