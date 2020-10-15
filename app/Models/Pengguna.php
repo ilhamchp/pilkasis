@@ -76,4 +76,14 @@ class Pengguna extends Authenticatable
     {
         return $this->hasOne('App\Models\Kandidat','nis');
     }
+
+    /**
+     * Menandai bahwa tabel pengguna memiliki
+     * relation one to one 
+     * terhadap tabel perolehan suara
+     */
+    public function perolehanSuara()
+    {
+        return $this->hasOne('App\Models\PerolehanSuara','nis_pemilih');
+    }
 }
