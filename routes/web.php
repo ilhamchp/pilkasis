@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,10 +26,7 @@ Route::get('/kandidat', function () {
     return view('kandidat');
 });
 
-Route::get('/pengguna', function () {
-    return view('pengguna');
-});
-
+Route::resource('pengguna', PenggunaController::class);
 
 Route::get('/perolehan-suara', function () {
     return view('perolehan_suara');
