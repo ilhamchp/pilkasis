@@ -55,8 +55,8 @@
                     <label class="col-md-4 control-label" for="is_admin">Admin?</label>
                     <div class="col-md-4">
                         <select id="is_admin" name="is_admin" class="form-control">
-                            <option value="true">Ya</option>
-                            <option value="false">Bukan</option>
+                            <option value="1">Ya</option>
+                            <option value="0">Bukan</option>
                         </select>
                     </div>
                 </div>
