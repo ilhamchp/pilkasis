@@ -29,19 +29,19 @@
                 <!-- Input NIS -->
                 <div class="form-group">
                     <label for="nis">NIS:</label>
-                    <input type="text" class="form-control" id="nis" name="nis">
+                    <input type="text" class="form-control" id="nis" value="{{ old('nis')}}" name="nis">
                 </div>
 
                 <!-- Input Nama -->
                 <div class="form-group">
                     <label for="nama">Nama:</label>
-                    <input type="text" class="form-control" id="nama" name="nama">
+                    <input type="text" class="form-control" id="nama" value="{{ old('nama')}}" name="nama">
                 </div>
 
                 <!-- Input Username-->
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input type="text" class="form-control" id="username" name="username">
+                    <input type="text" class="form-control" id="username" value="{{ old('username')}}" name="username">
                 </div>
 
                 <!-- Input Password-->
@@ -55,8 +55,8 @@
                     <label class="col-md-4 control-label" for="is_admin">Admin?</label>
                     <div class="col-md-4">
                         <select id="is_admin" name="is_admin" class="form-control">
-                            <option value="1">Ya</option>
-                            <option value="0">Bukan</option>
+                            <option value="1" @if(old('is_admin') == 1) selected @endif>Ya</option>
+                            <option value="0" @if(old('is_admin') == 0) selected @endif>Bukan</option>
                         </select>
                     </div>
                 </div>
