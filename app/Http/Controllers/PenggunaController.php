@@ -37,7 +37,7 @@ class PenggunaController extends Controller
      */
     public function store(Request $request)
     {
-        // untuk validasi form
+        // Message untuk error validasi
         $messages = [
             'required' => ':attribute tidak boleh kosong.',
             'unique' => ':attribute sudah dipakai.',
@@ -45,6 +45,8 @@ class PenggunaController extends Controller
             'password' => ':attribute tidak valid.',
             'min' => ':attribute minimal 6 karakter!'
         ];
+
+        // Validasi form
         $validator = Validator::make($request->all(), [
             'nis' => 'required|unique:App\Models\Pengguna,nis',
             'nama' => 'required',
@@ -53,11 +55,12 @@ class PenggunaController extends Controller
             'is_admin' => 'required|boolean'
         ],$messages);
 
+        // Cek validasi
         if($validator->fails()) {
-            toast('Error Toast','error');
             return redirect('pengguna/create')
-                        ->withErrors($validator)
-                        ->withInput()->with('sweet', 'Periksa kembali form!');
+                ->withErrors($validator)
+                ->withInput()
+                ->with('sweet', 'Periksa kembali form!');
         }else{
             Pengguna::create([
                 'nis' => $request->nis,
@@ -89,7 +92,10 @@ class PenggunaController extends Controller
      */
     public function edit(Pengguna $pengguna)
     {
-        //
+        if($pengguna->count()!=0){
+            $data['pengguna'] = $pengguna;
+            return view('pengguna_edit')->with($data);
+        }
     }
 
     /**
@@ -101,7 +107,40 @@ class PenggunaController extends Controller
      */
     public function update(Request $request, Pengguna $pengguna)
     {
-        //
+        // Message untuk error validasi
+        $messages = [
+            'required' => ':attribute tidak boleh kosong.',
+            'unique' => ':attribute sudah dipakai.',
+            'boolean' => ':attribute harus bernilai true / false.',
+            'password' => ':attribute tidak valid.',
+            'min' => ':attribute minimal 6 karakter!'
+        ];
+
+        // Validasi form
+        $validator = Validator::make($request->all(), [
+            'nis' => 'required|unique:App\Models\Pengguna,nis,'.$pengguna->nis,
+            'nama' => 'required',
+            'username' => 'required|unique:App\Models\Pengguna,username,'.$pengguna->nis,
+            'password' => 'required|min:6',
+            'is_admin' => 'required|boolean'
+        ],$messages);
+
+        // Cek validasi
+        if($validator->fails()) {
+            return redirect('pengguna/' . $pengguna->nis .'/edit')
+                ->withErrors($validator)
+                ->withInput()
+                ->with('sweet', 'Periksa kembali form!');
+        }else{
+            $pengguna->update([
+                'nis' => $request->nis,
+                'nama' => $request->nama,
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'is_admin' => $request->is_admin,
+            ]);
+            return redirect('pengguna')->with('sweet', 'Berhasil perbarui data!');
+        }
     }
 
     /**
