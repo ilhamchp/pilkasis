@@ -151,6 +151,7 @@ class PenggunaController extends Controller
      */
     public function destroy(Pengguna $pengguna)
     {
-        //
+        $pengguna->delete();
+        return redirect('pengguna')->with('sweet', 'Berhasil menghapus data!');
     }
 }

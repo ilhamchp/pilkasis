@@ -39,11 +39,11 @@
                             @endif
                         </td>
                         <td>
-                            <form action="{{ route('pengguna.destroy', $penggunas->nis) }}" method="post">
+                            <form action="{{ route('pengguna.destroy', $penggunas->nis) }}" method="post" id="form">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <a href="{{ route('pengguna.edit',$penggunas->nis) }}" class=" btn btn-sm btn-primary">Edit</a>
-                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Yakin ingin menghapus data?')">Delete</button>
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -57,23 +57,43 @@
 @stop
 
 @section('js')
-    @if(Session::has('sweet'))
-        <script>
+    <script>
+        let session = "{{ Session::has('sweet')}}";
+        if(session){
             Swal.fire(
                 'Yeayy..',
                 '{{ Session::get('sweet') }}',
                 'success'
             )
-        </script>
-        @php
-            Session::forget('sweet');
-        @endphp
-    @endif
-    <script>
+        }
+        <?php Session::forget('sweet'); ?>
         $(document).ready( function () {
             $('#tabel_pengguna').DataTable({
                 responsive: true
             });
-        } );
+
+            $('.btn-danger').click(function(e) {
+                var $form =  $(this).closest("form"); //Get the form here.
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: 'Data yang dihapus tidak dapat dikembalikan!',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Tidak, batalkan'
+                }).then((result) => {
+                    if (result.value) {
+                        $form.submit(); //Submit your Form Here. 
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire(
+                        'Dibatalkan',
+                        'Data tidak dihapus',
+                        'error'
+                        )
+                    }
+                })
+            });
+        });
     </script>
 @stop
