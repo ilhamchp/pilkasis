@@ -2,6 +2,8 @@
 
 @section('title', 'Pilkasis - Tambah Pengguna')
 
+@section('plugins.Sweetalert2', true)
+
 @section('content_header')
     <h1>Tambah Pengguna</h1>
 @stop
@@ -62,7 +64,6 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-md btn-primary">Submit</button>
-                    <button type="reset" class="btn btn-md btn-danger">Reset</button>
                 </div>
             </form>
             <!-- End of Form -->
@@ -70,4 +71,19 @@
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
+@stop
+
+@section('js')
+    @if(Session::has('sweet'))
+        <script>
+            Swal.fire(
+                'Oops..',
+                '{{ Session::get('sweet') }}',
+                'error'
+            )
+        </script>
+        @php
+            Session::forget('sweet');
+        @endphp
+    @endif
 @stop

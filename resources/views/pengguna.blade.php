@@ -2,6 +2,8 @@
 
 @section('plugins.Datatables', true)
 
+@section('plugins.Sweetalert2', true)
+
 @section('title', 'Pilkasis - Pengguna')
 
 @section('content_header')
@@ -55,6 +57,18 @@
 @stop
 
 @section('js')
+    @if(Session::has('sweet'))
+        <script>
+            Swal.fire(
+                'Yeayy..',
+                '{{ Session::get('sweet') }}',
+                'success'
+            )
+        </script>
+        @php
+            Session::forget('sweet');
+        @endphp
+    @endif
     <script>
         $(document).ready( function () {
             $('#tabel_pengguna').DataTable({

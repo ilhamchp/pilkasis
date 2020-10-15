@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PenggunaController extends Controller
 {
@@ -36,7 +37,37 @@ class PenggunaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // untuk validasi form
+        $messages = [
+            'required' => ':attribute tidak boleh kosong.',
+            'unique' => ':attribute sudah dipakai.',
+            'boolean' => ':attribute harus bernilai true / false.',
+            'password' => ':attribute tidak valid.',
+            'min' => ':attribute minimal 6 karakter!'
+        ];
+        $validator = Validator::make($request->all(), [
+            'nis' => 'required|unique:App\Models\Pengguna,nis',
+            'nama' => 'required',
+            'username' => 'required|unique:App\Models\Pengguna,username',
+            'password' => 'required|min:6',
+            'is_admin' => 'required|boolean'
+        ],$messages);
+
+        if($validator->fails()) {
+            toast('Error Toast','error');
+            return redirect('pengguna/create')
+                        ->withErrors($validator)
+                        ->withInput()->with('sweet', 'Periksa kembali form!');
+        }else{
+            Pengguna::create([
+                'nis' => $request->nis,
+                'nama' => $request->nama,
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'is_admin' => $request->is_admin
+            ]);
+            return redirect('pengguna')->with('sweet', 'Berhasil simpan data!');
+        }
     }
 
     /**
