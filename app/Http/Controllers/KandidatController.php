@@ -17,8 +17,13 @@ class KandidatController extends Controller
      */
     public function index()
     {
-        $data['kandidat'] = Kandidat::all();
-        return view('kandidat')->with($data);
+        if(!Session::get('login')){
+            return redirect('login')
+                ->with('sweetError', 'Anda harus login terlebih dahulu!');
+        }else{
+            $data['kandidat'] = Kandidat::all();
+            return view('kandidat')->with($data);
+        }
     }
 
     /**
@@ -28,9 +33,14 @@ class KandidatController extends Controller
      */
     public function create()
     {
-        $kandidatAvailable = Pengguna::whereNotIn('nis',Kandidat::select('nis')->get()->toArray())->get();
-        $data['data_kandidat'] = $kandidatAvailable;
-        return view('kandidat_create')->with($data);
+        if(!Session::get('login')){
+            return redirect('login')
+                ->with('sweetError', 'Anda harus login terlebih dahulu!');
+        }else{
+            $kandidatAvailable = Pengguna::whereNotIn('nis',Kandidat::select('nis')->get()->toArray())->get();
+            $data['data_kandidat'] = $kandidatAvailable;
+            return view('kandidat_create')->with($data);
+        }
     }
 
     /**
@@ -110,10 +120,15 @@ class KandidatController extends Controller
      */
     public function edit(Kandidat $kandidat)
     {
-        $kandidatAvailable = Pengguna::whereNotIn('nis',Kandidat::select('nis')->where('nis','!=',$kandidat->nis)->get()->toArray())->get();
-        $data['list_kandidat'] = $kandidatAvailable;
-        $data['data_kandidat'] = $kandidat;
-        return view('kandidat_edit')->with($data);
+        if(!Session::get('login')){
+            return redirect('login')
+                ->with('sweetError', 'Anda harus login terlebih dahulu!');
+        }else{
+            $kandidatAvailable = Pengguna::whereNotIn('nis',Kandidat::select('nis')->where('nis','!=',$kandidat->nis)->get()->toArray())->get();
+            $data['list_kandidat'] = $kandidatAvailable;
+            $data['data_kandidat'] = $kandidat;
+            return view('kandidat_edit')->with($data);
+        }
     }
 
     /**

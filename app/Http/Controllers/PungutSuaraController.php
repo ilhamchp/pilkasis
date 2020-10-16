@@ -14,9 +14,14 @@ class PungutSuaraController extends Controller
      */
     public function index()
     {
-        $kandidat = Kandidat::all();
-        $data['daftar_kandidat'] = $kandidat;
-        return view('pungut_suara')->with($data);
+        if(!Session::get('login')){
+            return redirect('login')
+                ->with('sweetError', 'Anda harus login terlebih dahulu!');
+        }else{
+            $kandidat = Kandidat::all();
+            $data['daftar_kandidat'] = $kandidat;
+            return view('pungut_suara')->with($data);
+        }
     }
 
     /**

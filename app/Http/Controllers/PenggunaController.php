@@ -15,8 +15,13 @@ class PenggunaController extends Controller
      */
     public function index()
     {
-        $data['pengguna'] = Pengguna::all();
-        return view('pengguna')->with($data);
+        if(!Session::get('login')){
+            return redirect('login')
+                ->with('sweetError', 'Anda harus login terlebih dahulu!');
+        }else{
+            $data['pengguna'] = Pengguna::all();
+            return view('pengguna')->with($data);
+        }
     }
 
     /**
@@ -26,7 +31,12 @@ class PenggunaController extends Controller
      */
     public function create()
     {
-        return view('pengguna_create');
+        if(!Session::get('login')){
+            return redirect('login')
+                ->with('sweetError', 'Anda harus login terlebih dahulu!');
+        }else{
+            return view('pengguna_create');
+        }
     }
 
     /**
@@ -92,9 +102,14 @@ class PenggunaController extends Controller
      */
     public function edit(Pengguna $pengguna)
     {
-        if($pengguna->count()!=0){
-            $data['pengguna'] = $pengguna;
-            return view('pengguna_edit')->with($data);
+        if(!Session::get('login')){
+            return redirect('login')
+                ->with('sweetError', 'Anda harus login terlebih dahulu!');
+        }else{
+            if($pengguna->count()!=0){
+                $data['pengguna'] = $pengguna;
+                return view('pengguna_edit')->with($data);
+            }
         }
     }
 
