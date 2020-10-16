@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Providers;
-
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Session;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('admin', function ($user = null) {
+            return Session::get('is_admin');
+        });
+
+        Gate::define('pengguna', function ($user = null) {
+            return !Session::get('is_admin');
+        });
     }
 }
