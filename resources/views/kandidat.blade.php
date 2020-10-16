@@ -42,7 +42,7 @@
                         <td>{{ $kandidats->visi }}</td>
                         <td>{{ $kandidats->misi }}</td>
                         <td>
-                            <img src="{{ asset('images/' . $kandidats->foto) }}" alt ="{{ $kandidats->foto }}" height="200" data-action="zoom">
+                            <img src="{{ asset('assets/images/' . $kandidats->foto) }}" alt ="{{ $kandidats->foto }}" height="200" data-action="zoom">
                         </td>
                         <td>
                             <form action="{{ route('kandidat.destroy', $kandidats->no_kandidat) }}" method="post" id="form">

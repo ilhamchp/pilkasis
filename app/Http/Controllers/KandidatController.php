@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengguna;
 use App\Models\Kandidat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class KandidatController extends Controller
 {
@@ -25,7 +28,9 @@ class KandidatController extends Controller
      */
     public function create()
     {
-        //
+        $kandidatAvailable = Pengguna::whereNotIn('nis',Kandidat::select('nis')->get()->toArray())->get();
+        $data['data_kandidat'] = $kandidatAvailable;
+        return view('kandidat_create')->with($data);
     }
 
     /**
@@ -36,7 +41,54 @@ class KandidatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Message untuk error validasi
+        $messages = [
+            'required' => ':attribute tidak boleh kosong.',
+            'exists' => ':attribute tidak terdapat di database.',
+            'unique' => ':attribute sudah dipakai.',
+            'boolean' => ':attribute harus bernilai true / false.',
+        ];
+
+        // Validasi form
+        $validator = Validator::make($request->all(), [
+            'no_kandidat' => 'required|unique:App\Models\Kandidat,no_kandidat',
+            'nis' => 'required|exists:App\Models\Pengguna,nis|unique:App\Models\Kandidat,nis',
+            'jk_kandidat' => 'required|boolean',
+            'visi' => 'required',
+            'misi' => 'required',
+            'foto' => 'required'
+        ],$messages);
+
+        // Cek validasi
+        if($validator->fails()) {
+            return redirect('kandidat/create')
+                ->withErrors($validator)
+                ->withInput()
+                ->with('sweet', 'Periksa kembali form!');
+        }else{
+            if($request->hasFile('foto')){
+                // Simpan foto ke folder asset
+                $storagePath = 'assets/images/';
+                $fotoKandidat = $request->file('foto');
+                $namaFoto   = 'Kandidat_'. $request->no_kandidat . '_'. $fotoKandidat->getClientOriginalName();
+                $fotoKandidat->move($storagePath, $namaFoto);
+
+                // Simpan data kandidat
+                Kandidat::create([
+                    'no_kandidat' => $request->no_kandidat,
+                    'nis' => $request->nis,
+                    'jk_kandidat' => $request->jk_kandidat,
+                    'visi' => $request->visi,
+                    'misi' => $request->misi,
+                    'foto' => $namaFoto,
+                ]);
+                return redirect('kandidat')->with('sweet', 'Berhasil simpan data!');
+            }
+            // Jika foto gagal diupload
+            return redirect('kandidat/create')
+                ->withInput()
+                ->with('sweet', 'Foto gagal upload! Silahkan coba lagi...');
+        }
     }
 
     /**
