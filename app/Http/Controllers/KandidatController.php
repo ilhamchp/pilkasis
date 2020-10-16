@@ -7,6 +7,7 @@ use App\Models\Kandidat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Session;
 
 class KandidatController extends Controller
 {

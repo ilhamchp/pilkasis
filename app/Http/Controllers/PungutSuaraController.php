@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kandidat;
 use Illuminate\Http\Request;
+use Session;
 
 class PungutSuaraController extends Controller
 {

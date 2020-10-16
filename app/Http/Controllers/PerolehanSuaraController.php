@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kandidat;
 use App\Models\PerolehanSuara;
 use Illuminate\Http\Request;
+use Session;
 
 class PerolehanSuaraController extends Controller
 {
