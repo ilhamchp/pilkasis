@@ -245,7 +245,8 @@ return [
         [
             'text' => 'Kandidat',
             'url'  => 'kandidat',
-            'icon' => 'fas fa-fw fa-user-check'
+            'icon' => 'fas fa-fw fa-user-check',
+            'can' => 'admin'
         ],
         [
             'text' => 'Pungut Suara',
@@ -255,19 +256,16 @@ return [
         [
             'text' => 'Perolehan Suara',
             'url'  => 'perolehan-suara',
-            'icon' => 'fas fa-fw fa-poll'
+            'icon' => 'fas fa-fw fa-poll',
+            'can' => 'admin'
         ],
         [
             'text' => 'Pengguna',
             'url'  => 'pengguna',
-            'icon' => 'fas fa-fw fa-users'
+            'icon' => 'fas fa-fw fa-users',
+            'can' => 'admin'
         ],
         ['header' => 'PENGATURAN AKUN'],
-        [
-            'text' => 'Profil',
-            'url'  => 'profile',
-            'icon' => 'fas fa-fw fa-user',
-        ],
         [
             'text'    => 'Keluar',
             'url'  => 'logout',
