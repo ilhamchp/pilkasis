@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pengguna;
 use App\Models\Kandidat;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class KandidatController extends Controller
@@ -70,7 +70,7 @@ class KandidatController extends Controller
                 // Simpan foto ke folder asset
                 $storagePath = 'assets/images/';
                 $fotoKandidat = $request->file('foto');
-                $namaFoto   = 'Kandidat_'. $request->no_kandidat . '_'. $fotoKandidat->getClientOriginalName();
+                $namaFoto   = 'Kandidat_'. $request->no_kandidat .'.'. $fotoKandidat->extension();
                 $fotoKandidat->move($storagePath, $namaFoto);
 
                 // Simpan data kandidat
@@ -133,6 +133,11 @@ class KandidatController extends Controller
      */
     public function destroy(Kandidat $kandidat)
     {
-        //
+        $file_path = public_path('assets/images/'. $kandidat->foto);
+        if(\File::exists($file_path)){
+            \File::delete($file_path);
+        }
+        $kandidat->delete();
+        return redirect('kandidat')->with('sweet', 'Berhasil menghapus data!');
     }
 }
