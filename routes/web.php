@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KandidatController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PerolehanSuaraController;
 use App\Http\Controllers\PungutSuaraController;
@@ -21,9 +23,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return view('beranda');
-});
 
 Route::resource('kandidat', KandidatController::class);
 
@@ -32,6 +31,14 @@ Route::resource('pengguna', PenggunaController::class);
 Route::resource('perolehan-suara', PerolehanSuaraController::class);
 
 Route::get('pungut-suara/', [PungutSuaraController::class, 'index']);
+
+Route::get('login', [LoginController::class, 'index']);
+
+Route::get('home', HomeController::class);
+
+Route::post('login/auth', [LoginController::class, 'authenticate']);
+
+Route::get('logout', [LoginController::class, 'logout']);
 
 Route::get('/profile', function () {
     return view('profil');

@@ -59,15 +59,6 @@ class Pengguna extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
-
-    /**
      * Menandai bahwa tabel pengguna memiliki
      * relation one to one 
      * terhadap tabel kandidat
