@@ -65,4 +65,24 @@ class Kandidat extends Model
     {
         return $this->belongsTo('App\Models\Pengguna','nis');
     }
+
+    /**
+     * Menandai bahwa tabel sesi memiliki
+     * relation one to one 
+     * terhadap tabel jadwal
+     */
+    public function perolehanSuara1()
+    {
+        return $this->hasMany('App\Models\PerolehanSuara','no_kandidat_1');
+    }
+
+    /**
+     * Menandai bahwa tabel sesi memiliki
+     * relation one to one 
+     * terhadap tabel jadwal
+     */
+    public function perolehanSuara2()
+    {
+        return $this->hasMany('App\Models\PerolehanSuara','no_kandidat_2');
+    }
 }

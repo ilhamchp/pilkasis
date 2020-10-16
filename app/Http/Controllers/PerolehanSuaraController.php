@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kandidat;
 use App\Models\PerolehanSuara;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Session;
 
@@ -20,8 +21,23 @@ class PerolehanSuaraController extends Controller
             return redirect('login')
                 ->with('sweetError', 'Anda harus login terlebih dahulu!');
         }else{
-            $kandidat = Kandidat::all();
-            $data['daftar_kandidat'] = $kandidat;
+            $daftar_kandidat = Kandidat::all();
+            $perolehan_suara = new Collection();
+            foreach($daftar_kandidat as $kandidat){
+                $no_kandidat = $kandidat->no_kandidat;
+                if($kandidat->jk_kandidat == 1){
+                    $data_kandidat = Kandidat::where('no_kandidat', $kandidat->no_kandidat)
+                    ->with(['perolehanSuara1'])
+                    ->first();
+                    $perolehan_suara->push($data_kandidat);
+                }else{
+                    $data_kandidat = Kandidat::where('no_kandidat', $kandidat->no_kandidat)
+                    ->with(['perolehanSuara2'])
+                    ->first();
+                    $perolehan_suara->push($data_kandidat);
+                }
+            }
+            $data['daftar_kandidat'] = $perolehan_suara;
             return view('perolehan_suara')->with($data);
         }
     }

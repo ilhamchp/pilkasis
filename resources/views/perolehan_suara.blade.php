@@ -28,12 +28,12 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Kandidat No {{ $kandidat->no_kandidat }} - {{ $kandidat->pengguna->nama }}</span>
-                        <span class="info-box-number">41,410</span>
-                        <div class="progress">
-                            <div class="progress-bar bg-info" style="width: 70%"></div>
-                        </div>
-                        <span class="progress-description">
-                            70% Increase in 30 Days
+                        <span class="info-box-number">
+                            @if($kandidat->jk_kandidat==1)
+                                {{ $kandidat->perolehanSuara1->count() }} Orang memilih
+                            @else
+                                {{ $kandidat->perolehanSuara2->count() }} Orang memilih
+                            @endif
                         </span>
                     </div>
                 </div>

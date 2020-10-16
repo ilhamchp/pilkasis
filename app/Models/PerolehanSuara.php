@@ -62,4 +62,24 @@ class PerolehanSuara extends Model
     {
         return $this->belongsTo('App\Models\Pengguna','nis_pemilih');
     }
+
+    /**
+     * Menandai bahwa tabel perolehan suara memiliki
+     * foreign key relation one to one 
+     * terhadap tabel pengguna
+     */
+    public function noKandidat1()
+    {
+        return $this->belongsTo('App\Models\Kandidat','no_kandidat_1');
+    }
+
+    /**
+     * Menandai bahwa tabel perolehan suara memiliki
+     * foreign key relation one to one 
+     * terhadap tabel pengguna
+     */
+    public function noKandidat2()
+    {
+        return $this->belongsTo('App\Models\Kandidat','no_kandidat_2');
+    }
 }
