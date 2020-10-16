@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KandidatController;
 use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +23,7 @@ Route::get('/home', function () {
     return view('beranda');
 });
 
-Route::get('/kandidat', function () {
-    return view('kandidat');
-});
+Route::resource('kandidat', KandidatController::class);
 
 Route::resource('pengguna', PenggunaController::class);
 
