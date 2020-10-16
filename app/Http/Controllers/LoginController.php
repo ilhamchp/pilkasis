@@ -17,7 +17,11 @@ class LoginController extends Controller
      */
     public function index()
     {
-        return view('login');
+        if(!Session::get('login')){
+            return view('login');
+        }else{
+            return redirect('home');
+        }
     }
 
     /**
