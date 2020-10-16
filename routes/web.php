@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\KandidatController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\PerolehanSuaraController;
+use App\Http\Controllers\PungutSuaraController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,14 +29,10 @@ Route::resource('kandidat', KandidatController::class);
 
 Route::resource('pengguna', PenggunaController::class);
 
-Route::get('/perolehan-suara', function () {
-    return view('perolehan_suara');
-});
+Route::resource('perolehan-suara', PerolehanSuaraController::class);
+
+Route::get('pungut-suara/', [PungutSuaraController::class, 'index']);
 
 Route::get('/profile', function () {
     return view('profil');
-});
-
-Route::get('/pungut-suara', function () {
-    return view('pungut_suara');
 });
