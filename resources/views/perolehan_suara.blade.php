@@ -22,8 +22,8 @@
                 @php
                     $count = $count + 1;
                 @endphp
-                <div class="info-box">
-                    <span class="info-box-icon bg-info">
+                <div class="info-box bg-info">
+                    <span class="info-box-icon">
                         <img src="{{ asset('assets/images/' . $kandidat->foto) }}" width="300" alt="{{ $kandidat->nama }}" data-action="zoom">
                     </span>
                     <div class="info-box-content">
