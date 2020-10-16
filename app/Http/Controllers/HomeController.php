@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengguna;
+use App\Models\Kandidat;
+use App\Models\PerolehanSuara;
 use Illuminate\Http\Request;
 use Session;
 
@@ -19,7 +22,13 @@ class HomeController extends Controller
                 ->with('sweetError', 'Anda harus login terlebih dahulu!');
         }
         else{
-            return view('beranda');
+            $data['jml_pengguna'] = Pengguna::all()->count();
+            $data['sdh_memilih'] = PerolehanSuara::all()->count();
+            $data['blm_memilih'] = Pengguna::all()->count() - PerolehanSuara::all()->count();
+            $data['jml_kandidat'] = Kandidat::all()->count();
+            $data['kandidat_laki'] = Kandidat::where('jk_kandidat','1')->get()->count();
+            $data['kandidat_perempuan'] = Kandidat::where('jk_kandidat','0')->get()->count();
+            return view('beranda')->with($data);
         }
     }
 }
