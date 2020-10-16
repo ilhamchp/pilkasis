@@ -40,12 +40,12 @@
                                 <img src="{{ asset('assets/images/' . $kandidat->foto) }}" width="200" alt="{{ $kandidat->nama }}" data-action="zoom">
                             </div>
                             <div class="col">
-                                Visi:
+                                <b>Visi:</b>
                                 <br>
                                 {{ $kandidat->visi }}
                             </div>
                             <div class="col">
-                                Misi:
+                                <b>Misi:</b>
                                 <br>
                                 {{ $kandidat->misi }}
                             </div>
@@ -53,7 +53,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        The footer of the card
+                        Kandidat no - {{ $kandidat->no_kandidat }}
                     </div>
                     <!-- /.card-footer -->
                 </div>

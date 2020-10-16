@@ -27,7 +27,8 @@
                         <img src="{{ asset('assets/images/' . $kandidat->foto) }}" width="300" alt="{{ $kandidat->nama }}" data-action="zoom">
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Kandidat No {{ $kandidat->no_kandidat }} - {{ $kandidat->pengguna->nama }}</span>
+                        <span class="info-box-text">Kandidat No - {{ $kandidat->no_kandidat }}</span>
+                        <span class="info-box-text">{{ $kandidat->pengguna->nama }}</span>
                         <span class="info-box-number">
                             @if($kandidat->jk_kandidat==1)
                                 {{ $kandidat->perolehanSuara1->count() }} Orang memilih
