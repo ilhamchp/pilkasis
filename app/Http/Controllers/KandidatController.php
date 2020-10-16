@@ -110,7 +110,10 @@ class KandidatController extends Controller
      */
     public function edit(Kandidat $kandidat)
     {
-        //
+        $kandidatAvailable = Pengguna::whereNotIn('nis',Kandidat::select('nis')->where('nis','!=',$kandidat->nis)->get()->toArray())->get();
+        $data['list_kandidat'] = $kandidatAvailable;
+        $data['data_kandidat'] = $kandidat;
+        return view('kandidat_edit')->with($data);
     }
 
     /**
@@ -122,7 +125,70 @@ class KandidatController extends Controller
      */
     public function update(Request $request, Kandidat $kandidat)
     {
-        //
+        // Message untuk error validasi
+        $messages = [
+            'required' => ':attribute tidak boleh kosong.',
+            'exists' => ':attribute tidak terdapat di database.',
+            'unique' => ':attribute sudah dipakai.',
+            'boolean' => ':attribute harus bernilai true / false.',
+        ];
+
+        // Validasi form
+        $validator = Validator::make($request->all(), [
+            'no_kandidat' => 'required|unique:App\Models\Kandidat,no_kandidat,'. $kandidat->no_kandidat,
+            'nis' => 'required|exists:App\Models\Pengguna,nis|unique:App\Models\Kandidat,nis,'. $kandidat->no_kandidat,
+            'jk_kandidat' => 'required|boolean',
+            'visi' => 'required',
+            'misi' => 'required'
+        ],$messages);
+
+        // Cek validasi
+        if($validator->fails()) {
+                return redirect('kandidat/'. $kandidat->no_kandidat .'/edit')
+                ->withErrors($validator)
+                ->withInput()
+                ->with('sweet', 'Periksa kembali form!');
+        }else{
+            if($request->foto==null){
+                // Update data kandidat
+                $kandidat->update([
+                    'no_kandidat' => $request->no_kandidat,
+                    'nis' => $request->nis,
+                    'jk_kandidat' => $request->jk_kandidat,
+                    'visi' => $request->visi,
+                    'misi' => $request->misi
+                ]);
+                return redirect('kandidat')->with('sweet', 'Berhasil simpan data!');
+            }else if($request->hasFile('foto')){
+                // Simpan foto ke folder asset
+                $storagePath = 'assets/images/';
+                $fotoKandidat = $request->file('foto');
+                $namaFoto   = 'Kandidat_'. $request->no_kandidat .'.'. $fotoKandidat->extension();
+                $fotoKandidat->move($storagePath, $namaFoto);
+
+                // Hapus foto lama
+                $file_path = public_path('assets/images/'. $kandidat->foto);
+                if(\File::exists($file_path)){
+                    \File::delete($file_path);
+                }
+                
+                // Update data kandidat
+                $kandidat->update([
+                    'no_kandidat' => $request->no_kandidat,
+                    'nis' => $request->nis,
+                    'jk_kandidat' => $request->jk_kandidat,
+                    'visi' => $request->visi,
+                    'misi' => $request->misi,
+                    'foto' => $namaFoto,
+                ]);
+                return redirect('kandidat')->with('sweet', 'Berhasil simpan data!');
+            }else{
+                // Jika gagal upload foto
+                return redirect('kandidat/'. $kandidat->no_kandidat .'/edit')
+                ->withInput()
+                ->with('sweet', 'Gagal upload foto!');
+            }
+        }
     }
 
     /**
