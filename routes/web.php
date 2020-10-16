@@ -32,6 +32,8 @@ Route::resource('perolehan-suara', PerolehanSuaraController::class);
 
 Route::get('pungut-suara/', [PungutSuaraController::class, 'index']);
 
+Route::post('pungut-suara/pilih/{kandidat}', [PungutSuaraController::class, 'pungutSuara'])->name('pungut-suara.pilih');
+
 Route::get('login', [LoginController::class, 'index']);
 
 Route::get('home', HomeController::class);

@@ -1,9 +1,11 @@
 @extends('adminlte::page')
 
+@section('plugins.Sweetalert2', true)
+
 @section('title', 'Pilkasis - Pungut Suara')
 
 @section('content_header')
-    <h1>Pungut Suara</h1>
+    <h1>{{ $nama_sesi }}</h1>
 @stop
 
 @section('content')
@@ -26,7 +28,7 @@
                     <div class="card-header">
                         <h3 class="card-title">{{ $kandidat->pengguna->nama }}</h3>
                         <div class="card-tools">
-                            <form action="{{ route('pengguna.destroy', $kandidat->no_kandidat) }}" method="post" id="form">
+                            <form action="{{ route('pungut-suara.pilih', $kandidat->no_kandidat) }}" method="post" id="form">
                                 {{ csrf_field() }}
                                 <button class="btn btn-sm btn-primary" type="submit">Pilih</button>
                             </form>
@@ -74,4 +76,39 @@
 
 @section('js')
     <script src="{{ asset('assets/js/zoom.js') }}"> </script>
+    <script>
+        let session = "{{ Session::has('sweetInfo')}}";
+        if(session){
+            Swal.fire(
+                'Informasi',
+                '{{ Session::get('sweetInfo') }}',
+                'info'
+            )
+        }
+        <?php Session::forget('sweetInfo'); ?>
+        $(document).ready( function () {
+            $('.btn-primary').click(function(e) {
+                var $form =  $(this).closest("form"); //Get the form here.
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: 'Pilihan anda tidak dapat dirubah!',
+                    type: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, pilih!',
+                    cancelButtonText: 'Tidak, batalkan!'
+                }).then((result) => {
+                    if (result.value) {
+                        $form.submit(); //Submit your Form Here. 
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire(
+                        'Dibatalkan',
+                        'Kandidat tidak dipilih',
+                        'info'
+                        )
+                    }
+                })
+            });
+        });
+    </script>
 @stop
